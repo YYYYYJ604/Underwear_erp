@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>钦州市海誉服装 — 车间生产管理系统</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">海誉</div>
+        <div class="company-name" id="sidebarCompanyName">钦州市海誉服装有限公司</div>
+        <div class="company-sub">车间生产管理系统</div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-page="dashboard"><span class="nav-icon">📊</span><span>数据看板</span></button>
+        <button class="nav-item" data-page="orders"><span class="nav-icon">📋</span><span>生产订单</span></button>
+        <button class="nav-item" data-page="production"><span class="nav-icon">🏭</span><span>流水线进度</span></button>
+        <button class="nav-item" data-page="piecework"><span class="nav-icon">💰</span><span>员工计件</span></button>
+        <button class="nav-item" data-page="rework"><span class="nav-icon">⚠️</span><span>次品返工</span></button>
+        <button class="nav-item" data-page="settings"><span class="nav-icon">⚙️</span><span>系统设置</span></button>
+      </nav>
+      <div class="sidebar-footer"><small>本地存储 · 数据安全</small></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 class="page-title" id="pageTitle">数据看板</h1>
+        <div class="topbar-right">
+          <button class="btn btn-secondary btn-sm" id="btnToggleTheme" title="切换深色/浅色模式">🌙 深色</button>
+          <div class="topbar-date" id="currentDate"></div>
+        </div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card stat-primary"><div class="stat-label">今日产量（件）</div><div class="stat-value" id="statTodayOutput">0</div></div>
+          <div class="stat-card stat-success"><div class="stat-label">进行中订单</div><div class="stat-value" id="statActiveOrders">0</div></div>
+          <div class="stat-card stat-warning"><div class="stat-label">预警订单</div><div class="stat-value" id="statWarningOrders">0</div></div>
+          <div class="stat-card stat-danger"><div class="stat-label">今日返工（件）</div><div class="stat-value" id="statTodayRework">0</div></div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="card"><div class="card-header"><h3>订单进度概览</h3></div><div class="card-body" id="dashboardOrderProgress"></div></div>
+          <div class="card"><div class="card-header"><h3>员工效率排行（本月）</h3></div><div class="card-body" id="dashboardEmployeeRank"></div></div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="card"><div class="card-header"><h3>工序产量分布（今日）</h3></div><div class="card-body" id="dashboardProcessChart"></div></div>
+          <div class="card"><div class="card-header"><h3>近 7 日产量趋势</h3></div><div class="card-body"><canvas id="chart7Days" height="200"></canvas></div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-orders">
+        <div class="toolbar">
+          <button class="btn btn-primary" id="btnAddOrder">+ 新增订单</button>
+          <input type="text" class="input search-input" id="orderSearch" placeholder="搜索客户 / 款号...">
+          <select class="select" id="orderFilter"><option value="all">全部状态</option><option value="normal">正常</option><option value="warning">预警</option><option value="overdue">延期</option><option value="done">已完成</option></select>
+        </div>
+        <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>客户</th><th>款号</th><th>数量</th><th>已生产</th><th>剩余</th><th>交期</th><th>状态</th><th>操作</th></tr></thead><tbody id="orderTableBody"></tbody></table></div></div>
+      </section>
+
+      <section class="page" id="page-production">
+        <div class="toolbar">
+          <select class="select" id="productionOrderSelect"></select>
+          <button class="btn btn-primary" id="btnUpdateProgress">更新进度</button>
+        </div>
+        <div id="productionPipeline"></div>
+      </section>
+
+      <section class="page" id="page-piecework">
+        <div class="toolbar">
+          <button class="btn btn-primary" id="btnAddPiecework">+ 录入计件</button>
+          <input type="month" class="input" id="pieceworkMonth">
+          <button class="btn btn-secondary" id="btnExportPiecework">导出 Excel</button>
+          <button class="btn btn-secondary" id="btnPrintWage">打印工资条</button>
+        </div>
+        <div class="stats-grid stats-grid-3">
+          <div class="stat-card"><div class="stat-label">本月计件总额（元）</div><div class="stat-value" id="statMonthWage">0</div></div>
+          <div class="stat-card"><div class="stat-label">本月计件总数（件）</div><div class="stat-value" id="statMonthPieces">0</div></div>
+          <div class="stat-card"><div class="stat-label">今日计件（件）</div><div class="stat-value" id="statTodayPieces">0</div></div>
+        </div>
+        <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>日期</th><th>员工</th><th>工序</th><th>款号</th><th>件数</th><th>单价</th><th>工资</th><th>操作</th></tr></thead><tbody id="pieceworkTableBody"></tbody></table></div></div>
+      </section>
+
+      <section class="page" id="page-rework">
+        <div class="toolbar">
+          <button class="btn btn-primary" id="btnAddRework">+ 记录返工</button>
+          <input type="month" class="input" id="reworkMonth">
+        </div>
+        <div class="stats-grid stats-grid-3">
+          <div class="stat-card stat-danger"><div class="stat-label">本月返工件数</div><div class="stat-value" id="statMonthRework">0</div></div>
+          <div class="stat-card stat-warning"><div class="stat-label">本月返工率</div><div class="stat-value" id="statReworkRate">0%</div></div>
+          <div class="stat-card"><div class="stat-label">涉及员工数</div><div class="stat-value" id="statReworkEmployees">0</div></div>
+        </div>
+        <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>日期</th><th>员工</th><th>款号</th><th>工序</th><th>问题</th><th>件数</th><th>操作</th></tr></thead><tbody id="reworkTableBody"></tbody></table></div></div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="settings-grid">
+          <div class="card">
+            <div class="card-header"><h3>公司信息</h3></div>
+            <div class="card-body">
+              <div class="form-group"><label>公司名称</label><input type="text" class="input" id="settingCompanyName" value="钦州市海誉服装有限公司"></div>
+              <button class="btn btn-primary" id="btnSaveCompany">保存</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>工序与单价</h3></div>
+            <div class="card-body"><div id="processPriceList"></div><button class="btn btn-secondary btn-sm" id="btnAddProcess">+ 添加工序</button></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>员工名单</h3></div>
+            <div class="card-body">
+              <div class="form-inline"><input type="text" class="input" id="newEmployeeName" placeholder="员工姓名"><button class="btn btn-primary btn-sm" id="btnAddEmployee">添加</button></div>
+              <div id="employeeList" class="tag-list"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>数据管理</h3></div>
+            <div class="card-body">
+              <div id="backupStatus"></div>
+              <hr style="margin:12px 0;border:none;border-top:1px solid var(--border-color)">
+              <p class="hint">备份或恢复全部数据，换电脑时可导入</p>
+              <button class="btn btn-primary btn-sm" id="btnLoadDemo" style="margin-bottom:12px">加载演示数据（体验全貌）</button>
+              <div class="btn-group" style="margin-bottom:12px">
+                <button class="btn btn-secondary" id="btnExportData">导出备份 (JSON)</button>
+                <label class="btn btn-secondary">导入备份<input type="file" id="btnImportData" accept=".json" hidden></label>
+              </div>
+              <div class="btn-group" style="margin-bottom:12px">
+                <button class="btn btn-secondary" id="btnRestoreFromIndexedDB">从 IndexedDB 恢复</button>
+              </div>
+              <button class="btn btn-danger btn-sm" id="btnClearData">清空全部数据</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-header"><h3 id="modalTitle">标题</h3><button class="modal-close" id="modalClose">&times;</button></div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer" id="modalFooter"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/orders.js"></script>
+  <script src="js/production.js"></script>
+  <script src="js/piecework.js"></script>
+  <script src="js/rework.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/backup.js"></script>
+</body>
+</html>
+
