@@ -20,6 +20,10 @@
         <button class="nav-item" data-page="production"><span class="nav-icon">🏭</span><span>流水线进度</span></button>
         <button class="nav-item" data-page="piecework"><span class="nav-icon">💰</span><span>员工计件</span></button>
         <button class="nav-item" data-page="rework"><span class="nav-icon">⚠️</span><span>次品返工</span></button>
+        <button class="nav-item" data-page="help">
+          <span class="nav-icon">❓</span>
+          <span>使用说明</span>
+        </button>
         <button class="nav-item" data-page="settings"><span class="nav-icon">⚙️</span><span>系统设置</span></button>
       </nav>
       <div class="sidebar-footer"><small>本地存储 · 数据安全</small></div>
@@ -96,6 +100,10 @@
         <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>日期</th><th>员工</th><th>款号</th><th>工序</th><th>问题</th><th>件数</th><th>操作</th></tr></thead><tbody id="reworkTableBody"></tbody></table></div></div>
       </section>
 
+      <section class="page" id="page-help">
+      <div id="helpContent"></div>
+    </section>
+
       <section class="page" id="page-settings">
         <div class="settings-grid">
           <div class="card">
@@ -156,6 +164,7 @@
   <script src="js/production.js"></script>
   <script src="js/piecework.js"></script>
   <script src="js/rework.js"></script>
+  <script src="js/help.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/app.js"></script>
   <script src="js/backup.js"></script>

@@ -10,10 +10,11 @@ const App = {
     production: { title: '流水线进度', render: () => Production.render() },
     piecework: { title: '员工计件', render: () => Piecework.render() },
     rework: { title: '次品返工', render: () => Rework.render() },
+    help: { title: '使用说明', render: () => Help.render() },
     settings: { title: '系统设置', render: () => Settings.render() }
   },
 
-  pageKeys: ['dashboard', 'orders', 'production', 'piecework', 'rework', 'settings'],
+  pageKeys: ['dashboard', 'orders', 'production', 'piecework', 'rework', 'help', 'settings'],
 
   init() {
     const data = Storage.load();
