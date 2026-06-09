@@ -136,6 +136,10 @@ const Storage = {
 
   clearAll() {
     localStorage.removeItem(this.KEY);
+    // 同时清理 IndexedDB 备份
+    if (typeof BackupDB !== 'undefined') {
+      const req = indexedDB.deleteDatabase(BackupDB.DB_NAME);
+    }
   },
 
   importData(json) {
