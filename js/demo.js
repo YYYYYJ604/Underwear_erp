@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 演示数据 — 一键加载体验全貌
  */
 const DemoData = {
@@ -11,7 +11,7 @@ const DemoData = {
       { id: 'p5', name: '包装', price: 0.3 }
     ];
 
-    const employees = ['张美玲', '李桂花', '王秀珍', '陈玉兰', '刘秀英', '赵金凤', '黄小梅', '周丽华'];
+    const employees = ['张美华', '李桂花', '王菊兰', '陈玉凤', '刘菊英', '赵金凤', '黄小梅', '周丽华'];
 
     const day = (offset) => {
       const d = new Date();
@@ -28,7 +28,7 @@ const DemoData = {
       },
       {
         id: 'demo-o2', customer: '深圳优品服饰', styleNo: 'HY-2026-002', quantity: 3000,
-        deadline: day(2), remark: '无痕内裤', produced: 2100,
+        deadline: day(2), remark: '无缝内裤', produced: 2100,
         progress: { p1: 3000, p2: 2800, p3: 2500, p4: 2300, p5: 2100 },
         createdAt: day(-15) + 'T08:00:00'
       },
@@ -68,8 +68,8 @@ const DemoData = {
     }
 
     const reworks = [
-      { id: 'demo-rw1', date: day(-2), employee: '王秀珍', styleNo: 'HY-2026-002', processId: 'p2', processName: '车缝', issue: '针距不均', quantity: 15, createdAt: day(-2) + 'T14:00:00' },
-      { id: 'demo-rw2', date: day(-1), employee: '陈玉兰', styleNo: 'HY-2026-001', processId: 'p3', processName: '剪线', issue: '线头未剪', quantity: 22, createdAt: day(-1) + 'T11:00:00' },
+      { id: 'demo-rw1', date: day(-2), employee: '王菊兰', styleNo: 'HY-2026-002', processId: 'p2', processName: '车缝', issue: '针距不均', quantity: 15, createdAt: day(-2) + 'T14:00:00' },
+      { id: 'demo-rw2', date: day(-1), employee: '陈玉凤', styleNo: 'HY-2026-001', processId: 'p3', processName: '剪线', issue: '线头未剪', quantity: 22, createdAt: day(-1) + 'T11:00:00' },
       { id: 'demo-rw3', date: day(0), employee: '李桂花', styleNo: 'HY-2026-003', processId: 'p4', processName: '品检', issue: '尺寸偏差', quantity: 8, createdAt: day(0) + 'T09:30:00' },
       { id: 'demo-rw4', date: day(-4), employee: '赵金凤', styleNo: 'HY-2026-002', processId: 'p5', processName: '包装', issue: '包装不良', quantity: 10, createdAt: day(-4) + 'T16:00:00' }
     ];
